@@ -56,6 +56,7 @@ public class Ai : MonoBehaviour
         if (other.CompareTag("Finish"))
         {
             SoundManager.Instance.PlayEnemyEscaped();
+            GameManager.instance.EnemyReachedEnd();
             aiState = AiState.Finished;
             this.gameObject.SetActive(false);
         }

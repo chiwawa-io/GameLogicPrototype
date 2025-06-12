@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
         UpdateEnemyCount();
         UiManager.Instance.UpdateScore(score);
     }
-    private void UpdateEnemyCount()
+    public void EnemyReachedEnd()
     {
         escapedEnemy++;
         if (escapedEnemy >= 10)
@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void EnemyReachedEnd()
+    private void UpdateEnemyCount()
     {
         enemies--;
         if (enemies <= 0)
