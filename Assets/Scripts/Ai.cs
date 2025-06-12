@@ -5,15 +5,18 @@ using UnityEngine.AI;
 
 public class Ai : MonoBehaviour
 {
-
-    [SerializeField] private Transform startPoint;
-    [SerializeField] private Transform endPoint;
+    private Transform endPoint;
 
     private NavMeshAgent agent;
+
+    private Animator animator;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
+
+        endPoint = SpawnManager.Instance.GetEndPoint();
 
         if (agent == null)
         {
@@ -22,10 +25,17 @@ public class Ai : MonoBehaviour
         }
 
         agent.SetDestination(endPoint.position);
+        animator.SetFloat("Speed", agent.speed);
     }
 
     
     void Update()
     {
+        //if (agent.remainingDistance < 1f) this.gameObject.SetActive(false);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        
     }
 }
