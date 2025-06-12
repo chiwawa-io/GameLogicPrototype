@@ -90,8 +90,8 @@ public class SpawnManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(2f); // Adjust the spawn interval as needed
             SpawnAiPrefab();
+            yield return new WaitForSeconds(12f);
         }
     }
 
