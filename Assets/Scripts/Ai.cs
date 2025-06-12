@@ -21,7 +21,7 @@ public class Ai : MonoBehaviour
     [SerializeField]
     private AiState aiState;
 
-    void Start()
+    private void OnEnable()
     {
         Initialize();
     }
@@ -38,10 +38,11 @@ public class Ai : MonoBehaviour
             Debug.LogError("NavMeshAgent component not found on this GameObject.");
             return;
         }
-
+        
         agent.SetDestination(endPoint.position);
         animator.SetFloat("Speed", agent.speed);
 
+        animator.ResetTrigger("Death");
         aiState = AiState.Running;
     } 
 
@@ -65,69 +66,18 @@ public class Ai : MonoBehaviour
             StartCoroutine(HidingRoutine());
             aiState = AiState.Hiding;
         }
-
-        switch (other.gameObject.name)
+        if (other.CompareTag("HidingTrigger"))
         {
-            case "T1":
-                agent.SetDestination(other.GetComponent<HidingTriggerScript>().Get().position);
-                break;
-            case "T2":
-                agent.SetDestination(other.GetComponent<HidingTriggerScript>().Get().position);
-                break;
-            case "T3":
-                agent.SetDestination(other.GetComponent<HidingTriggerScript>().Get().position);
-                break;
-            case "T4":
-                agent.SetDestination(other.GetComponent<HidingTriggerScript>().Get().position);
-                break;
-            case "T5":
-                agent.SetDestination(other.GetComponent<HidingTriggerScript>().Get().position);
-                break;
-            case "T6":
-                agent.SetDestination(other.GetComponent<HidingTriggerScript>().Get().position);
-                break;
-            case "T7":
-                agent.SetDestination(other.GetComponent<HidingTriggerScript>().Get().position);
-                break;
-            case "T8":
-                agent.SetDestination(other.GetComponent<HidingTriggerScript>().Get().position);
-                break;
-            case "T9":
-                agent.SetDestination(other.GetComponent<HidingTriggerScript>().Get().position);
-                break;
-            case "T10":
-                agent.SetDestination(other.GetComponent<HidingTriggerScript>().Get().position);
-                break;
-            case "T11":
-                agent.SetDestination(other.GetComponent<HidingTriggerScript>().Get().position);
-                break;
-            case "T12":
-                agent.SetDestination(other.GetComponent<HidingTriggerScript>().Get().position);
-                break;
-            case "T13":
-                agent.SetDestination(other.GetComponent<HidingTriggerScript>().Get().position);
-                break;
-            case "T14":
-                agent.SetDestination(other.GetComponent<HidingTriggerScript>().Get().position);
-                break;
-            case "T15":
-                agent.SetDestination(other.GetComponent<HidingTriggerScript>().Get().position);
-                break;
-            case "T16":
-                agent.SetDestination(other.GetComponent<HidingTriggerScript>().Get().position);
-                break;
-            case "T17":
-                agent.SetDestination(other.GetComponent<HidingTriggerScript>().Get().position);
-                break;
-            default:
-                break;
-
+            var position = other.GetComponent<HidingTriggerScript>().Get().position;
+            if (aiState == AiState.Dead) return;
+            agent.SetDestination(position);
         }
+        
     }
 
     IEnumerator HidingRoutine()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(2f);
         agent.isStopped = false;
         animator.SetBool("Hiding", false);
         agent.SetDestination(endPoint.position);
@@ -139,6 +89,7 @@ public class Ai : MonoBehaviour
         aiState = AiState.Dead;
         animator.SetTrigger("Death");
         yield return new WaitForSeconds(2f);
-        Destroy(gameObject);
+        agent.isStopped = true;
+        this.gameObject.SetActive(false);
     }
 }
