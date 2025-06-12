@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     private int score = 0;
     private int time = 150;
     private int enemies = 20;
+    private int escapedEnemy = 0;
 
     [SerializeField]
     private int points = 50;
@@ -50,6 +51,16 @@ public class GameManager : MonoBehaviour
     }
     private void UpdateEnemyCount()
     {
+        escapedEnemy++;
+        if (escapedEnemy >= 10)
+        {
+            _isGameEnded = true;
+            UiManager.Instance.ShowTryAgain();
+        }
+    }
+
+    public void EnemyReachedEnd()
+    {
         enemies--;
         if (enemies <= 0)
         {
@@ -61,7 +72,6 @@ public class GameManager : MonoBehaviour
             UiManager.Instance.UpdateEnemiesRemaining(enemies);
         }
     }
-
     void RestartGame()
     {
         score = 0;

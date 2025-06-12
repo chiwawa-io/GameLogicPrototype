@@ -55,8 +55,9 @@ public class Ai : MonoBehaviour
     {
         if (other.CompareTag("Finish"))
         {
-            this.gameObject.SetActive(false);
+            SoundManager.Instance.PlayEnemyEscaped();
             aiState = AiState.Finished;
+            this.gameObject.SetActive(false);
         }
         if (other.CompareTag("HidingSpot"))
         {
@@ -88,8 +89,8 @@ public class Ai : MonoBehaviour
     IEnumerator DeathRoutine() {
         aiState = AiState.Dead;
         animator.SetTrigger("Death");
-        yield return new WaitForSeconds(2f);
         agent.isStopped = true;
+        yield return new WaitForSeconds(2f);
         this.gameObject.SetActive(false);
     }
 }
